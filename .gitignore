@@ -1,0 +1,27 @@
+# --- runtime data (never commit) ---
+data/
+server.log
+PW.txt
+
+# --- python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# --- local secret / credentials ---
+*.token
+*.pem
+
+# --- android build outputs ---
+DoublesPoultryAdmin_v2/.gradle/
+DoublesPoultryAdmin_v2/build/
+DoublesPoultryAdmin_v2/app/build/
+DoublesPoultryAdmin_v2/local.properties
+DoublesPoultryAdmin_v2/.idea/
+
+# --- os junk ---
+Thumbs.db
+desktop.ini
+~$*

@@ -1,0 +1,1819 @@
+/* DOUBLES POULTRY FARM — weighing terminal styles.
+   A light, high-contrast kiosk theme: big touch targets, big numbers, and a
+   text-size control that scales the whole UI from one variable. */
+
+:root {
+  color-scheme: light;
+  /* Before the size control runs, start at the Normal step so there is no
+     flash of smaller text on first paint. */
+  --font-scale: 1.2;
+  --bg: #f2f4f8;
+  --bg-panel: #ffffff;
+  --bg-raised: #f8fafc;
+  --bg-input: #ffffff;
+  --border: #d5dae1;
+  --border-strong: #b3bcc7;
+  --text: #1f2429;
+  --text-muted: #5a6470;
+  --accent: #3b82f6;
+  --accent-strong: #2563eb;
+  --green: #15803d;
+  --green-dim: #dcfce7;
+  --amber: #b45309;
+  --red: #dc2626;
+  --red-dim: #fecaca;
+  --shadow: 0 6px 24px rgba(15, 23, 42, 0.12);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+html[data-font-scale='md'] { --font-scale: 1.2; }
+html[data-font-scale='lg'] { --font-scale: 1.5; }
+html[data-font-scale='xl'] { --font-scale: 1.75; }
+html[data-font-scale='xxl'] { --font-scale: 2; }
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+html {
+  font-size: calc(16px * var(--font-scale) * var(--screen-fit, 1));
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+#app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-loading,
+.noscript,
+.shutdown-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 1.5rem;
+  color: var(--text-muted);
+  padding: 3rem;
+}
+
+.shutdown-screen { color: var(--text); font-size: 2rem; }
+
+/* ---------------------------------------------------------------- header */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  /* Orange header with white brand text — the shared look for the admin and
+     staff terminals (the staff page used to override this; now it is the base). */
+  background: #ea580c;
+  border-bottom: 1px solid #c2410c;
+  flex-wrap: wrap;
+}
+
+.app-header .brand-name { color: #fff; }
+
+/* ---------------------------------------------------------------- admin PIN */
+
+/* The lock screen shown before the admin terminal opens. One centered card on
+   the page background. The staff terminal has no lock, so these classes only
+   ever appear on the admin page. */
+.pin-lock {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.pin-card {
+  width: min(26rem, 100%);
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+  padding: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  text-align: center;
+}
+
+.pin-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.pin-hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* The masked PIN reads as four wide dots: big type, generous letter-spacing,
+   centred. */
+.pin-input {
+  font: inherit;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.5em;
+  padding: 0.5rem 0.5rem 0.5rem 1rem; /* the trailing tracking adds a phantom space */
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--bg-input);
+}
+
+.pin-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.pin-error {
+  color: var(--red);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.pin-unlock {
+  width: 100%;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.brand-glyph {
+  font-size: 1.6rem;
+  color: var(--accent);
+}
+
+.brand-text { display: flex; flex-direction: column; min-width: 0; }
+
+.brand-name {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-size: 1.05rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-controls {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-left: auto;
+}
+
+.app-logo {
+  display: block;
+  height: 2.5rem;
+  width: auto;
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------------ nav */
+
+.nav-tabs {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.4rem 1rem 0;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+.nav-tab {
+  appearance: none;
+  border: 1px solid transparent;
+  border-bottom: none;
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nav-tab:hover { color: var(--text); background: rgba(15, 23, 42, 0.05); }
+
+.nav-tab.active {
+  color: var(--text);
+  background: var(--bg);
+  border-color: var(--border);
+  border-bottom: 1px solid var(--bg);
+  margin-bottom: -1px;
+}
+
+#screen-main {
+  flex: 1;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.app-footer {
+  padding: 0.6rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg-panel);
+}
+
+/* -------------------------------------------------------------- buttons */
+
+.btn {
+  appearance: none;
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-raised);
+  color: var(--text);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, opacity 0.12s ease;
+  touch-action: manipulation;
+}
+
+.btn:hover:not(:disabled) { background: #eef1f5; border-color: #9aa5b1; }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-primary { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: #1d4ed8; border-color: #1d4ed8; }
+
+.btn-success { background: var(--green-dim); border-color: var(--green); color: #14532d; }
+.btn-success:hover:not(:disabled) { background: #bbf7d0; }
+
+.btn-danger { background: #fee2e2; border-color: var(--red); color: #7f1d1d; }
+.btn-danger:hover:not(:disabled) { background: var(--red-dim); }
+
+/* Armed first tap of the shutdown button: filled red so the prompted state is
+   unmistakable in the header. */
+.btn-danger.armed,
+.btn-danger.armed:hover:not(:disabled) {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  font-weight: 700;
+}
+
+.btn-secondary { background: var(--bg-raised); }
+
+.btn-sm { padding: 0.35rem 0.65rem; font-size: 0.85rem; }
+.btn-lg { padding: 0.9rem 1.4rem; font-size: 1.05rem; width: 100%; }
+.btn-sm.muted { opacity: 0.7; border-color: var(--amber); }
+.btn-sm.online { border-color: var(--green); color: #14532d; }
+.btn-sm.error { border-color: var(--red); color: #7f1d1d; }
+
+.btn-icon {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+.btn-icon:hover { color: var(--text); background: rgba(15, 23, 42, 0.07); }
+
+/* --------------------------------------------------------------- panels */
+
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.panel h2, .panel h3, .panel h4 { margin: 0; letter-spacing: 0.05em; }
+.panel h2 { font-size: 1.05rem; }
+.panel h3 { font-size: 0.95rem; margin-top: 0.5rem; color: var(--text-muted); }
+.panel h4 { font-size: 0.9rem; margin-top: 0.5rem; }
+
+.muted { color: var(--text-muted); font-size: 0.9rem; }
+
+.two-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .two-col { grid-template-columns: 1fr; }
+}
+
+/* --------------------------------------------------------------- fields */
+
+.field-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+  letter-spacing: 0.04em;
+}
+.field-label.inline { display: inline; margin: 0; }
+
+.text-input,
+.weight-input,
+.select-input,
+.search-input {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+}
+
+.text-input.small { width: auto; min-width: 6rem; }
+
+.weight-input { font-size: 1.3rem; font-weight: 700; text-align: center; }
+
+.text-input:focus,
+.weight-input:focus,
+.select-input:focus,
+.search-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: var(--accent);
+}
+
+.search-input { max-width: 18rem; }
+
+.rounding-note {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+  color: var(--amber);
+}
+
+.field-error { margin: 0.35rem 0 0; color: #b91c1c; font-size: 0.85rem; }
+
+.row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+.row .text-input, .row .select-input { flex: 1; min-width: 8rem; }
+
+.error-banner {
+  background: #fef2f2;
+  border: 1px solid var(--red-dim);
+  color: #991b1b;
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ------------------------------------------------- selecting an item */
+
+.select-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .select-layout { grid-template-columns: 1fr; }
+}
+
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8rem, 1fr));
+  gap: 0.6rem;
+}
+
+.item-card {
+  appearance: none;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  text-align: center;
+  min-height: 7rem;
+}
+
+.item-card:hover { border-color: var(--border-strong); }
+.item-card.selected { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.35); }
+
+.item-thumb {
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-input);
+}
+
+.item-thumb.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.item-name { font-weight: 600; }
+.item-code { font-size: 0.78rem; color: var(--text-muted); }
+
+.formula-list { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.formula-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  padding: 0.4rem 0.5rem;
+}
+.formula-row.selected { border-color: var(--accent); }
+
+.formula-load {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+.formula-load span { color: var(--text-muted); font-size: 0.82rem; }
+
+/* --------------------------------------------------------------- cart */
+
+.cart-lines { display: flex; flex-direction: column; gap: 0.35rem; max-height: 22rem; overflow-y: auto; }
+
+.cart-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.55rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.cart-line-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cart-line-weight { color: var(--text); font-variant-numeric: tabular-nums; }
+.cart-line-done { color: var(--green); font-size: 0.85rem; }
+
+.add-controls { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-raised);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+.cart-total strong { font-variant-numeric: tabular-nums; }
+
+/* Admin weighing terminal: reuses the staff terminal chrome.
+   The admin shell supplies its own header/nav/footer; only the weighing
+   stage is wrapped in .page-staff so it picks up the staff terminal styling. */
+#screen-main:has(> .page-staff) {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+#screen-main > .page-staff {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------------------------------------------------------------ terminal */
+
+.terminal {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .terminal { grid-template-columns: 1fr; }
+}
+
+.terminal-queue {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.queue-line {
+  display: grid;
+  grid-template-columns: 1.6rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.6rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  color: var(--text-muted);
+}
+
+.queue-line.active {
+  background: rgba(59, 130, 246, 0.14);
+  border-color: var(--accent);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.queue-line.completed { color: var(--green); opacity: 0.85; }
+.queue-index { font-weight: 700; text-align: center; }
+.queue-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.queue-weight { font-variant-numeric: tabular-nums; }
+
+.terminal-main {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.terminal-head { display: flex; justify-content: flex-end; }
+
+.scale-status { font-size: 0.82rem; letter-spacing: 0.04em; color: var(--text-muted); }
+.scale-status.online { color: var(--green); }
+.scale-status.offline { color: var(--amber); }
+.scale-status.error { color: var(--red); }
+
+.readout {
+  text-align: center;
+  background: #f0f3f7;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.readout-label { font-size: 0.8rem; letter-spacing: 0.2em; color: var(--text-muted); }
+
+.readout-value {
+  font-size: clamp(3rem, 12vw, 6rem);
+  font-weight: 800;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.readout-unit { font-size: 1rem; color: var(--text-muted); letter-spacing: 0.2em; }
+
+.verdict {
+  text-align: center;
+  border-radius: var(--radius);
+  padding: 0.85rem;
+  border: 2px solid var(--border);
+  background: var(--bg-raised);
+}
+
+.verdict-title { font-size: 1.6rem; font-weight: 800; letter-spacing: 0.08em; }
+.verdict-detail { font-size: 1.1rem; color: var(--text-muted); }
+
+.verdict.neutral { border-color: var(--border-strong); }
+.verdict.accepted { border-color: var(--green); background: var(--green-dim); }
+.verdict.accepted .verdict-title { color: #14532d; }
+.verdict.accepted .verdict-detail { color: #166534; }
+.verdict.underweight { border-color: var(--amber); background: #fef3c7; }
+.verdict.underweight .verdict-title { color: #92400e; }
+.verdict.overweight { border-color: var(--red); background: #fef2f2; }
+.verdict.overweight .verdict-title { color: #991b1b; }
+
+.terminal-meta {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+.terminal-meta strong { color: var(--text); font-variant-numeric: tabular-nums; }
+
+.terminal-hint { min-height: 1.2rem; color: var(--amber); font-size: 0.9rem; text-align: center; }
+
+.advance-bar { min-height: 1.4rem; text-align: center; font-weight: 700; color: var(--green); }
+.advance-bar.active { padding: 0.35rem; border: 1px dashed var(--green); border-radius: var(--radius-sm); }
+
+.terminal-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+/* ---------------------------------------------------------- completion */
+
+.complete-panel { max-width: 60rem; margin: 0 auto; width: 100%; }
+.complete-head { text-align: center; }
+.complete-head h2 { font-size: 1.5rem; color: var(--green); }
+.batch-no { color: var(--text-muted); letter-spacing: 0.1em; }
+
+.bill-table, .report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+.bill-table th, .bill-table td,
+.report-table th, .report-table td {
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.bill-table th, .report-table th {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.bill-table .num, .report-table .num { text-align: right; }
+.bill-table tfoot td { font-weight: 700; border-top: 2px solid var(--border-strong); }
+
+.complete-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+.complete-actions .btn-lg { width: auto; }
+
+/* ------------------------------------------------------------ formulas */
+
+/* Formula tab: the formula list and the editor are stacked in a single column
+   rather than side by side, so the editor gets the full page width (which the
+   ingredient rows need) and reads top to bottom. */
+.formula-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.formula-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.75rem;
+  background: var(--bg-raised);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.formula-card.editing { border-color: var(--accent); }
+.formula-card-head { display: flex; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; }
+.formula-lines-inline { margin: 0; padding-left: 1.1rem; color: var(--text-muted); font-size: 0.88rem; }
+.formula-card-actions { display: flex; gap: 0.4rem; }
+
+.draft-lines { display: flex; flex-direction: column; gap: 0.4rem; }
+.draft-line { display: grid; grid-template-columns: minmax(0, 1fr) 6rem auto auto; gap: 0.4rem; align-items: center; }
+.draft-line .weight-input { font-size: 1rem; padding: 0.5rem; }
+
+/* Move up / move down controls on each ingredient row. The array order of the
+   rows is the order the staff terminal weighs them in. */
+.draft-line-order { display: flex; gap: 0.1rem; }
+.draft-line-order .btn-icon { padding: 0.3rem 0.35rem; font-size: 0.72rem; line-height: 1; }
+.draft-line-order .btn-icon:disabled { opacity: 0.25; cursor: not-allowed; }
+.draft-line-order .btn-icon:disabled:hover { color: var(--text-muted); background: transparent; }
+
+.editor-actions { display: flex; gap: 0.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
+
+/* ------------------------------------------------------------- history */
+
+.history-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1rem; }
+@media (max-width: 900px) { .history-layout { grid-template-columns: 1fr; } }
+
+.history-list { display: flex; flex-direction: column; gap: 0.3rem; max-height: 70vh; overflow-y: auto; }
+
+.history-row {
+  appearance: none;
+  font: inherit;
+  color: var(--text);
+  text-align: left;
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr) 6rem 6rem;
+  gap: 0.5rem;
+  padding: 0.55rem 0.6rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  align-items: center;
+}
+.history-row:hover { border-color: var(--border-strong); }
+.history-row.selected { border-color: var(--accent); }
+.history-batch { font-weight: 700; }
+.history-time, .history-formula { color: var(--text-muted); font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.history-total { text-align: right; font-variant-numeric: tabular-nums; }
+
+.history-detail { display: flex; flex-direction: column; gap: 0.6rem; }
+.bill-head { display: flex; gap: 0.75rem; align-items: baseline; flex-wrap: wrap; }
+
+/* ------------------------------------------------------------- reports */
+
+.report-tabs { display: flex; gap: 0.25rem; }
+
+.report-controls { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+.report-body { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.report-summary { display: flex; gap: 1rem; flex-wrap: wrap; }
+.stat {
+  flex: 1;
+  min-width: 8rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem;
+  text-align: center;
+}
+.stat span { display: block; font-size: 1.6rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.stat label { color: var(--text-muted); font-size: 0.82rem; letter-spacing: 0.06em; }
+
+/* --------------------------------------------------------- item master */
+
+.items-table { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.item-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.item-row-main { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+.item-row-main strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item-row-main .native { font-size: 0.85rem; }
+.item-row-actions { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.item-row.editing { border-color: var(--accent); }
+
+/* -------------------------------------------------------------- overlay */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+  z-index: 50;
+}
+/* Class-based hiding, e.g. the kiosk overlay and the staff scale popover.
+   The staff panel toggles this class, so it must beat the panel's own
+   display rule. */
+.hidden { display: none !important; }
+
+.modal {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  width: min(36rem, 100%);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-head { display: flex; justify-content: space-between; align-items: center; }
+.modal-head h2 { margin: 0; font-size: 1.1rem; }
+
+.status-line { font-weight: 600; }
+.status-line.online { color: var(--green); }
+.status-line.offline { color: var(--amber); }
+
+/* ---------------------------------------------------------------- toast */
+
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(2rem);
+  background: var(--bg-raised);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ==========================================================================
+   Staff weighing terminal  (from staff.css)
+   Scoped under .page-staff so the kiosk page is untouched.
+   ========================================================================== */
+
+/* DOUBLES POULTRY FARM — staff weighing terminal.
+   Its own front end (the reference ships a separate staff-app), sharing the
+   kiosk's theme variables from app.css. Only staff-specific structure lives
+   here: the formula-only select screen, the three-panel weighing terminal and
+   the done card. */
+
+[hidden] { display: none !important; }
+
+/* ------------------------------------------------------------- header */
+
+.page-staff .font-size-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.page-staff .font-size-btn {
+  appearance: none;
+  font: inherit;
+  font-weight: 700;
+  min-width: 2.2rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  color: var(--text);
+  cursor: pointer;
+}
+.page-staff .font-size-btn:hover:not(:disabled) { border-color: #9aa5b1; }
+.page-staff .font-size-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.page-staff .font-size-value {
+  min-width: 5.5rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* --------------------------------------------------------- scale popover */
+
+.page-staff .scale-settings { position: relative; display: inline-flex; }
+
+.page-staff .scale-settings-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--bg-raised);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.6rem;
+  min-height: 2.2rem;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.page-staff .scale-settings-btn:hover { border-color: #9aa5b1; }
+
+.page-staff .scale-settings-glyph { font-size: 0.95rem; line-height: 1; }
+
+.page-staff .scale-settings-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #9aa5b1;
+}
+.page-staff .scale-settings-dot.online { background: #16a34a; box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.25); }
+.page-staff .scale-settings-dot.offline { background: #d97706; }
+.page-staff .scale-settings-dot.error { background: var(--red); box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.25); }
+
+.page-staff .scale-settings-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 60;
+  width: max-content;
+  min-width: 16rem;
+  max-width: min(22rem, calc(100vw - 1.5rem));
+  background: var(--bg-panel);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem;
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.page-staff .scale-conn { display: flex; flex-direction: column; gap: 0.5rem; }
+.page-staff .scale-conn-body { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+
+.page-staff .scale-port-fixed {
+  font-family: var(--mono, monospace);
+  font-size: 0.78rem;
+  color: var(--text);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+}
+
+.page-staff .scale-baud-select {
+  background: var(--bg-input);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  padding: 0.3rem 0.4rem;
+  font: inherit;
+}
+
+.page-staff .scale-conn-status {
+  flex: 1 1 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.page-staff .scale-conn-status .err { color: var(--red); }
+
+.page-staff .mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.page-staff .mode-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #9aa5b1; }
+.page-staff .mode-dot.on { background: #16a34a; }
+.page-staff .mode-dot.err { background: var(--red); }
+
+/* --------------------------------------------------- select screen */
+
+.page-staff .staff-select { display: flex; flex-direction: column; gap: 1.4rem; }
+
+.page-staff .staff-select-intro { text-align: center; padding-bottom: 0.9rem; border-bottom: 1px solid var(--border); }
+
+.page-staff .screen-title { font-size: 1.4rem; font-weight: 800; letter-spacing: 0.05em; color: var(--text); }
+.page-staff .screen-sub { margin-top: 0.35rem; color: var(--text-muted); font-size: 0.95rem; }
+
+.page-staff .staff-select-grid { display: grid; gap: 1rem; align-items: stretch; }
+.page-staff .staff-select-grid.single { grid-template-columns: 1fr; max-width: 42rem; margin: 0 auto; width: 100%; }
+
+.page-staff .staff-panel { display: flex; flex-direction: column; border-left: 4px solid var(--accent); }
+
+.page-staff .panel-num {
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-staff .staff-panel .panel-title { display: flex; align-items: center; gap: 0.5rem; }
+
+.page-staff .panel-count {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: var(--bg-input);
+  border-radius: 10px;
+  padding: 0.15rem 0.6rem;
+}
+
+.page-staff .staff-panel-sub {
+  padding: 0.4rem 0.2rem 0.6rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.4;
+}
+
+.page-staff .staff-list-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.5rem 0;
+  min-height: 6rem;
+  max-height: 28rem;
+  overflow-y: auto;
+}
+
+.page-staff .panel-placeholder {
+  padding: 0.9rem 0.6rem;
+  color: var(--text-muted);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-items: center;
+}
+.page-staff .panel-placeholder p { margin: 0; }
+
+.page-staff .staff-row {
+  appearance: none;
+  font: inherit;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  width: 100%;
+  text-align: left;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.8rem;
+  cursor: pointer;
+}
+.page-staff .staff-row:hover { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+
+.page-staff .staff-row-name { font-size: 0.98rem; font-weight: 700; }
+.page-staff .staff-row-meta { margin-top: 0.15rem; font-size: 0.8rem; color: var(--text-muted); }
+
+.page-staff .staff-row-action {
+  flex: 0 0 auto;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--accent-strong);
+  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+}
+
+/* Keyboard-only operation: the row the arrow keys point at. It must read as
+   "this is the one Enter will pick" from across the room, so it is louder than
+   the hover style. */
+.page-staff .staff-row.kb-active {
+  border-color: var(--accent);
+  background: #eff6ff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35);
+}
+.page-staff .staff-row.kb-active .staff-row-name { color: var(--accent-strong); }
+.page-staff .staff-row.kb-active .staff-row-action { background: var(--accent); }
+
+/* The one-line key legend shown on the keyboard-driven screens. */
+.page-staff .kb-hint {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  background: var(--bg-raised);
+  border: 1px dashed var(--border-strong);
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+  text-align: center;
+}
+
+/* The batch-count step between picking a formula and weighing. One centered
+   card: formula name, the big count, the key legend, then the start button
+   (kept clickable so a mouse still works during maintenance). */
+.page-staff .staff-batch-card {
+  width: min(30rem, 100%);
+  margin: 2rem auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+  padding: 1.6rem;
+}
+
+.page-staff .staff-batch-formula {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--accent-strong);
+}
+
+.page-staff .staff-batch-count {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.page-staff .staff-batch-count .stepper-btn {
+  font-size: 1.6rem;
+  padding: 0.5rem 1.2rem;
+}
+
+.page-staff .staff-batch-number {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+  min-width: 6rem;
+  width: 6rem;
+  font-variant-numeric: tabular-nums;
+  font-family: inherit;
+  text-align: center;
+  color: var(--text);
+  background: var(--bg-input, var(--bg-raised));
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.6rem;
+}
+
+.page-staff .staff-batch-number:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* --------------------------------------------------- weighing terminal */
+
+.page-staff .terminal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  /* The shared ".terminal" rule above sets align-items: start, which made every
+     child shrink to its own content and leave a wide gap on the right. Stretch
+     makes the bar, the layout and every panel fill the terminal's full width. */
+  align-items: stretch;
+}
+
+/* The old top bar (title, status, scale chip, SKIP / CANCEL buttons) is gone —
+   the operator's sketch has a clean single stack. The alerts toggle now sits in
+   the app header. .page-staff .terminal-bar rules were removed with it. */
+
+.page-staff .alert-toggle {
+  appearance: none;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  border-radius: 4px;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-raised);
+  color: var(--text);
+}
+.page-staff .alert-toggle.on { border-color: var(--green); color: #14532d; }
+.page-staff .alert-toggle.off { border-color: var(--amber); color: #92400e; }
+
+/* One column: every panel is full width and stacked in the ORDER they appear in
+   the markup — the weighing queue, then the item box (with its scale readout),
+   then the LIVE WEIGHT READOUT panel underneath. This gives the item box the
+   whole width instead of squeezing it into a narrow column. */
+.page-staff .terminal-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: start;
+}
+
+/* The sketch stack: each row — formula, item (+ next item), target — is one
+   bordered box with a small caption over a big value, matching how the three
+   LCD readouts below it look. The old WEIGHING QUEUE panel is gone; the "next
+   item" hint also covers the queue's role of showing what comes next. */
+.page-staff .sketch-block {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  padding: 0.3rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+.page-staff .sketch-block .current-formula { line-height: 1.08; }
+/* Weighing UI text is always UPPER CASE — the names come from the item
+   master in any case, so the transform (not the data) does the shaping. */
+.page-staff .sketch-block .current-formula,
+.page-staff .sketch-block .current-item-name {
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.page-staff .sketch-block .current-item-names { justify-content: space-between; }
+.page-staff .sketch-target-value {
+  font-size: 3.6rem;
+  font-weight: 800;
+  line-height: 1.08;
+  font-variant-numeric: tabular-nums;
+  /* Number and unit on ONE line: the auto-fit enlarges the value until it
+     fills the block, and the unit must stay beside it at a fixed, muted
+     size instead of wrapping underneath as a second giant line. */
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.page-staff .sketch-target-unit {
+  /* The unit reads at the heading tier: beside a 124px value a 24px "kg"
+     disappeared — 2.2rem keeps it legible without competing with the digits. */
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+.page-staff .next-item-hint {
+  flex: 0 0 auto;
+  font-size: 1.218rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  text-align: right;
+}
+.page-staff .next-item-hint b { color: var(--accent-strong); font-weight: 800; }
+
+/* The batch detail beside the formula name runs slightly larger than the
+   NEXT ITEM hint — it is the value the operator checks between rounds, so it
+   should read at a glance without competing with the item name. */
+.page-staff .next-item-hint.batch-hint {
+  font-size: 1.474rem;
+  font-weight: 700;
+}
+
+/* Scale panel */
+.page-staff .scale-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* The captions above the numbers (Formula Name, Item Name, Target Weight,
+     Running Weight, Cumulative Weight) sit one tier above the fixed hints —
+     big enough to read at a glance, small enough stay subordinates of the
+     values they name. */
+  --scale-caption-font: 2.2rem;
+}
+
+.page-staff .current-item-name { font-size: 1.3rem; font-weight: 800; letter-spacing: 0.02em; }
+
+.page-staff .scale-wrap { display: flex; justify-content: center; }
+.page-staff .scale { width: 100%; }
+
+/* Running Weight box: the caption lives INSIDE the bordered box (like the
+   other headings), so the box chrome sits on this wrapper, not on the LCD
+   row. Sized container lets the caption give room back to the digits when
+   the box is squeezed. */
+.page-staff .scale-lcd-box {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.8rem;
+  background: var(--bg-raised);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+  container-type: size;
+}
+.page-staff .scale-lcd-box .scale-caption {
+  font-size: var(--scale-caption-font);
+  font-size: min(var(--scale-caption-font), 34cqh);
+  margin-bottom: 0;
+}
+.page-staff .scale-lcd {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+/* 5.885rem = 113px at the 19.2px root: the three big numbers sit 10px taller than
+   the 30mm (103px) they measured before. The three share this height. */
+.page-staff .scale-reading {
+  font-family: var(--mono, monospace);
+  font-size: 5.885rem;
+  font-weight: 800;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  /* Always the plain text colour — the old amber/green status colouring made
+     the reading look like it changed meaning mid-weigh. */
+  color: var(--text);
+}
+.page-staff .scale-lcd-unit { font-size: 2.2rem; color: var(--text-muted); letter-spacing: 0.1em; }
+
+/* Input panel */
+.page-staff .input-panel { display: flex; flex-direction: column; gap: 0.55rem; }
+
+.page-staff .metric { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.5rem 0.7rem; background: var(--bg-raised); }
+.page-staff .metric-label { font-size: 0.86rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+.page-staff .metric-value { font-size: 1.38rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.page-staff .metric-hint { margin-top: 0.35rem; font-size: 1.13rem; color: var(--text-muted); line-height: 1.4; }
+
+.page-staff .device-error { margin-top: 0.4rem; font-size: 0.78rem; color: #b91c1c; }
+
+/* restore the hidden attribute: the display:flex above would otherwise keep a
+   "hidden" status box on the screen */
+.page-staff .status-box[hidden] { display: none; }
+
+.page-staff .status-box {
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.72rem;
+  background: var(--bg-panel);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  /* Compact by default: the LOAD REMOVED, TARGET REACHED and offline boxes carry
+     full sentences as their detail, and a sentence at headline size would make
+     the box taller than the whole panel. */
+  --verdict-title-font: 1.44rem;
+  --verdict-detail-font: 1.4rem;
+}
+.page-staff .status-box .status-title {
+  flex: 0 0 auto;
+  font-size: var(--verdict-title-font);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.page-staff .status-box .status-detail {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--verdict-detail-font);
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.page-staff .status-box .status-detail {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--verdict-detail-font);
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* The verdict boxes are filled edge to edge with the state colour, not just a
+   coloured title: green accepted / target reached, amber underweight and
+   offline, red over target. */
+.page-staff .status-box.status-auto-advance {
+  border-color: var(--green);
+  background: var(--green);
+  color: #fff;
+}
+.page-staff .status-box.status-auto-advance { border-style: dashed; border-color: rgba(255, 255, 255, 0.85); }
+.page-staff .status-box.status-device {
+  border-color: var(--amber);
+  background: var(--amber);
+  color: #fff;
+}
+.page-staff .status-box.status-auto-advance .status-title,
+.page-staff .status-box.status-device .status-title { color: #fff; }
+.page-staff .status-box.status-auto-advance .status-detail,
+.page-staff .status-box.status-device .status-detail { color: rgba(255, 255, 255, 0.92); }
+
+.page-staff .btn-next-line { width: 100%; font-size: 1.58rem; }
+
+.page-staff .next-blocked { color: var(--amber); }
+
+/* ------------------------------------------------------------- done */
+
+.page-staff .staff-done { display: flex; justify-content: center; padding-top: 1.5rem; }
+
+.page-staff .staff-done-card {
+  width: 30rem;
+  max-width: 100%;
+  align-items: center;
+  text-align: center;
+  gap: 0.7rem;
+}
+
+.page-staff .staff-done-icon {
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-staff .staff-done-facts { display: flex; gap: 0.6rem; width: 100%; margin: 0.4rem 0; }
+.page-staff .staff-done-fact {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  background: var(--bg-raised);
+}
+.page-staff .staff-done-label { font-size: 0.64rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+.page-staff .staff-done-value { font-family: var(--mono, monospace); font-weight: 700; font-size: 1rem; }
+
+.page-staff .error-text { color: #b91c1c; font-size: 0.9rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; justify-content: center; }
+
+.page-staff .resume-banner { margin-bottom: 0.8rem; }
+
+/* ------------------------------------------------- number of batches */
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  overflow: hidden;
+}
+
+.stepper-btn {
+  appearance: none;
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1;
+  padding: 0.35rem 0.9rem;
+  border: 0;
+  background: var(--bg-raised);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.stepper-btn:hover:not(:disabled) { background: var(--accent); color: #fff; }
+.stepper-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.stepper-value {
+  min-width: 3rem;
+  text-align: center;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  padding: 0.35rem 0.4rem;
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+/* Kiosk queue panel */
+.batch-control {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 0;
+}
+
+.batch-control .field-label { margin: 0; }
+
+.batch-note {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.batch-progress { color: var(--text-muted); letter-spacing: 0.06em; }
+.batch-next-hint { color: var(--amber); text-align: center; margin: 0.2rem 0 0.6rem; }
+
+/* Staff select panel */
+.staff-batch {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 0.2rem;
+}
+
+.staff-batch-label { font-weight: 700; letter-spacing: 0.04em; }
+.staff-batch-note { font-size: 0.82rem; color: var(--text-muted); }
+
+/* ------------------------------------- staff terminal: bigger readouts */
+
+.page-staff .current-formula {
+  font-size: 2.813rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  overflow-wrap: break-word;
+  line-height: 1.04;
+}
+
+/* The item name is the hero of the box. It is sized in rem, like the rest of the
+   terminal, so the A+/A- text-size control scales it along with everything else;
+   break-word keeps a long name intact where it can and only breaks as a last
+   resort. */
+.page-staff .current-item-name {
+  font-size: 6.131rem;
+  line-height: 1.04;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
+
+/* The item name shares the row with the NEXT ITEM hint: the name on the left,
+   the hint right-aligned beside it (where the translation used to sit). When
+   both cannot share one line at the balanced font, the hint wraps beneath the
+   name — sharing the row's space "as per availability", either beside or
+   under, decided by real geometry. */
+.page-staff .current-item-names {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+.page-staff .current-item-name { flex: 0 1 auto; min-width: 0; }
+
+/* Target Weight moved up into the sketch stack (see .sketch-target-value above
+   the LCDs), so the old input-panel Required-Weight rules are gone with it. */
+
+.page-staff .staff-done-hint { color: var(--text-muted); font-size: 0.95rem; }
+
+/* Scale panel: the LCD shows the item weight measured from zero, with the
+   cumulative weight below it. */
+.page-staff .scale-caption {
+  font-size: var(--scale-caption-font);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.1rem;
+}
+.page-staff .scale-caption span { text-transform: none; letter-spacing: 0; }
+
+.page-staff .scale-cumulative {
+  margin-top: 0.2rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.2rem 0.8rem;
+  background: var(--bg-raised);
+  /* Sized container so the label below can measure this box's height: in a
+     box squeezed by verdict boxes or short viewports the label must give
+     room back to the value instead of eating half the box. */
+  container-type: size;
+}
+.page-staff .scale-cumulative-label {
+  display: block;
+  font-size: var(--scale-caption-font);
+  /* Cap the label at a third of its own box height (progressive: the min()
+     line wins where container-query units are supported, falls back cleanly
+     where they are not). */
+  font-size: min(var(--scale-caption-font), 34cqh);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.1rem;
+}
+.page-staff .scale-cumulative-lcd {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+.page-staff .scale-cumulative-value {
+  font-family: var(--mono, monospace);
+  font-size: 5.885rem;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.page-staff .scale-cumulative-unit {
+  font-size: 2.2rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+/* ------------------------------------- staff terminal: portrait fit (1080x1920)
+
+   The weighing terminal is the only screen that must never scroll — it runs on a
+   32" portrait kiosk. The header and footer are full size here, matching the
+   admin terminal; the trims below claw back the pixels that costs so the header,
+   the whole terminal and the footer still fit inside 1920px. The old queue and
+   top bar are gone (see the sketch stack), which frees a large chunk of height. */
+
+/* Free height is shared: the layout spreads the two panels (3:1 favouring the
+   sketch stack), and inside them the blocks, LCD boxes and verdict boxes each
+   grow, centring their own content. Nothing is left as dead white space on the
+   portrait kiosk, and the same rules work for the landscape row. */
+.page-staff .terminal-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+/* Stable height shares, not content-driven: flex-basis 0 pins every block
+   to its slice of the panel whatever font size the auto-fit applies, so the
+   fit budgets are stable from one layout to the next and the blocks stay
+   stretched (no dead white space, no scroll feedback loops). */
+.page-staff .terminal-layout > .scale-panel { flex: 3 1 0; min-height: 0; }
+.page-staff .terminal-layout > .input-panel { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+
+.page-staff .sketch-block { flex: 1 1 0; min-height: 0; justify-content: center; }
+.page-staff .scale-wrap { flex: 1.5 1 0; min-height: 0; display: flex; flex-direction: column; }
+.page-staff .scale { display: flex; flex-direction: column; flex: 1 1 0; min-height: 0; }
+.page-staff .scale-lcd-box,
+.page-staff .scale-cumulative { flex: 1 1 0; min-height: 0; }
+.page-staff .scale-lcd { align-items: center; }
+.page-staff .scale-cumulative {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+}
+.page-staff .input-panel { justify-content: center; }
+.page-staff .input-panel .status-box { flex: 0 0 auto; flex-wrap: wrap; align-items: baseline; }
+
+/* Two panels are stacked here (sketch stack + verdict panel). At the shipped
+   1rem padding that alone is ~144px of vertical space; tightening it plus a
+   smaller gap buys back room for the enlarged readouts. */
+.page-staff .panel { padding: 0.5rem; gap: 0.4rem; }
+.page-staff .panel-title { font-size: 1.3rem; }
+
+.page-staff .scale-wrap { margin-top: 0.1rem; }
+.page-staff .scale-caption { margin-bottom: 0.15rem; }
+.page-staff .scale-cumulative-label { margin-bottom: 0.15rem; }
+
+/* ------------------------------------- staff terminal: landscape support
+
+   In landscape the two panels sit side by side: the sketch stack keeps the
+   width it deserves and the verdict column beside it stays visible without
+   scrolling. Scoped to html.page-staff (the <html> tag) so the admin page —
+   which wraps its own weighing stage in a div.page-staff — is left alone. */
+
+@media (orientation: landscape) and (min-width: 1024px) {
+  /* The two panels become side-by-side: sketch stack on the wider left, the
+     verdict column beside it. Width is shared by the same 3:1 flex the
+     portrait height uses. */
+  html.page-staff .terminal-layout {
+    flex-direction: row;
+  }
+  html.page-staff .terminal-layout > .input-panel {
+    overflow-y: auto;
+  }
+
+  /* The three LCD values and the captions shrink so three-column-worth of
+     numbers still fit without pushing the difference/cumulative boxes to wrap
+     their unit onto another line. */
+  html.page-staff .scale-panel {
+    --scale-caption-font: 1.7rem;
+  }
+  html.page-staff .current-formula { font-size: clamp(1.6rem, 2.6vw, 2.4rem); }
+  html.page-staff .current-item-name { font-size: clamp(2rem, 4vw, 4rem); }
+  html.page-staff .sketch-target-value { font-size: clamp(2rem, 3.4vw, 3.6rem); }
+  html.page-staff .next-item-hint { font-size: clamp(0.9rem, 1.3vw, 1.218rem); }
+  html.page-staff .next-item-hint.batch-hint { font-size: clamp(1.05rem, 1.6vw, 1.474rem); }
+  html.page-staff .scale-reading { font-size: clamp(2.6rem, 4.6vw, 4.5rem); }
+  html.page-staff .scale-cumulative-value { font-size: clamp(2.6rem, 4.6vw, 4.5rem); }
+
+  html.page-staff .status-box.status-auto-advance {
+    --verdict-title-font: 1.8rem;
+    --verdict-detail-font: 1.4rem;
+  }
+}
+
+/* Smaller tablets and phones scale the whole staff UI down through the root
+   font instead of overflowing the fixed-height page (which cannot scroll).
+   Same A+/A- steps still apply on top of --screen-fit. Scoped to the staff
+   page so the admin terminal keeps its exact sizes. */
+@media (orientation: portrait) and (max-width: 900px) {
+  html.page-staff { --screen-fit: 0.78 !important; }
+}
+@media (orientation: portrait) and (max-width: 660px) {
+  html.page-staff { --screen-fit: 0.6 !important; }
+}
+@media (orientation: landscape) and (max-width: 1366px) and (max-height: 860px) {
+  html.page-staff { --screen-fit: 0.72 !important; }
+}
+
+/* The readout panel is the one part of the page whose height varies while an
+   operator is mid-weigh: the verdict box, the LOAD REMOVED warning, the
+   auto-advance countdown and the NEXT LINE button each appear and disappear.
+   Left unconstrained they push the whole document past 1920px and the footer off
+   the bottom, which is the one thing this screen must never do.
+   Rather than guess a max-height, the staff page becomes a full-height flex
+   column: the weighing section takes the space left between the header and the
+   footer, and the readout is allowed to shrink and scroll inside itself. The page
+   therefore stays exactly 1920px in every state. The default offline,
+   underweight and overweight states need no scroll at all, so the scrollbar only
+   ever appears in the rare tall combinations. */
+.page-staff #app { height: 100vh; overflow: hidden; }
+.page-staff #screen-main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.page-staff .terminal { flex: 1 1 auto; min-height: 0; }
+.page-staff .terminal-layout { flex: 1 1 auto; min-height: 0; align-items: stretch; }
+.page-staff .input-panel { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+
+/* ---------------------------------------- staff terminal: load a formula */
+
+/* The formula picker is the only thing on screen before weighing starts, so it
+   is scaled up (~1.28x) to use the full 1080px-wide portrait panel. The grid is
+   widened to fill the screen instead of a fixed 42rem column, which would have
+   overflowed the panel at this size. Everything is scoped to the select stage so
+   the weighing terminal is untouched. */
+.page-staff .staff-select { gap: 1.795rem; }
+.page-staff .staff-select-intro { padding-bottom: 1.154rem; }
+.page-staff .staff-select .screen-title { font-size: 1.795rem; }
+.page-staff .staff-select .screen-sub { margin-top: 0.448rem; font-size: 1.218rem; }
+
+.page-staff .staff-select-grid.single { max-width: none; }
+.page-staff .staff-select-grid { gap: 1.282rem; }
+
+.page-staff .staff-panel { padding: 0.641rem; gap: 0.577rem; border-left-width: 5.128px; }
+.page-staff .staff-panel .panel-title { gap: 0.641rem; font-size: 1.667rem; }
+
+.page-staff .panel-num {
+  width: 1.923rem;
+  height: 1.923rem;
+  font-size: 0.923rem;
+}
+.page-staff .panel-count { font-size: 0.923rem; border-radius: 13.08px; padding: 0.192rem 0.769rem; }
+
+.page-staff .staff-panel-sub {
+  padding: 0.513rem 0.256rem 0.769rem;
+  font-size: 1.09rem;
+  line-height: 1.4;
+}
+
+.page-staff .staff-list-scroll {
+  gap: 0.513rem;
+  padding: 0.641rem 0;
+  min-height: 7.692rem;
+  /* Viewport-aware cap (see the comment at the base .staff-list-scroll rule):
+     the chrome above the list plus the footer measures ~24rem, rem-linear, so
+     this keeps the list — and its own scrollbar — inside the visible page at
+     every --screen-fit value instead of clipping below the fold. */
+  max-height: min(29.487rem, calc(100vh - 24rem));
+}
+
+.page-staff .staff-row { gap: 0.897rem; padding: 0.833rem 1.026rem; border-radius: var(--radius); }
+.page-staff .staff-row-name { font-size: 1.256rem; }
+.page-staff .staff-row-meta { margin-top: 0.192rem; font-size: 1.026rem; }
+.page-staff .staff-row-action { font-size: 0.923rem; padding: 0.513rem 1.026rem; border-radius: 5.128px; }
+
+.page-staff .staff-batch { gap: 0.769rem; padding: 0.641rem 0.256rem; }
+.page-staff .staff-batch-label { font-size: 1.09rem; }
+.page-staff .staff-batch-note { font-size: 1.051rem; }
+
+.page-staff .staff-batch .stepper-btn { font-size: 1.474rem; padding: 0.448rem 1.154rem; }
+.page-staff .staff-batch .stepper-value { min-width: 3.846rem; font-size: 1.09rem; padding: 0.448rem 0.513rem; }
+.page-staff .staff-batch .stepper { border-radius: var(--radius); }

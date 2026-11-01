@@ -1,0 +1,4 @@
+# Runtime dependencies (double-digit Python 3.10+ works)
+Flask>=3.0
+requests>=2.31
+pyserial>=3.5

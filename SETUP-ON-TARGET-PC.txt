@@ -1,0 +1,57 @@
+HOW TO SETUP ON TARGET PC (path: D:\Project)
+
+1. COPY FILES
+   - Copy this entire folder to target PC at: D:\Project
+
+2. CREATE KIOSK USER (from Admin account)
+   - Win+R -> netplwiz -> Add -> "Add a user without a Microsoft account"
+   - Name: Kiosk  (Standard user, NOT administrator)
+
+3. INSTALL PYTHON (from Admin account, if not done)
+   - Install Python 3 -> tick "Add python.exe to PATH"
+     (choose "Install for all users" so the Kiosk account can use it)
+
+4. SETUP THE KIOSK ACCOUNT
+   - Sign out of Admin, sign in as Kiosk
+   - Open D:\Project, double-click install-kiosk.bat
+   - You should see a list of [OK] lines and DONE
+
+5. TEST
+   - Ctrl+Alt+Del -> Sign out, then sign in as Kiosk again
+   - After ~5 seconds Edge opens full-screen on http://localhost:3001/
+     (server starts hidden automatically, restarts if it stops,
+      Edge reopens if someone closes it)
+   - Ctrl+Alt+A switches Kiosk <-> Staff terminal
+   - Blocked shortcuts: Alt+Tab, Alt+F4, Windows key, Win+R,
+     Ctrl+Esc, Ctrl+Shift+Esc, right-click menus
+   - Still allowed: typing, Enter/Tab/arrows, Ctrl+Alt+A
+   - To exit: Ctrl+Alt+Del -> Sign out
+
+6. OPTIONAL AUTO-SIGN-IN (from Admin)
+   - Win+R -> netplwiz -> select Kiosk ->
+     untick "Users must enter a user name and password..." -> Apply
+
+WHAT install-kiosk.bat DOES (all inside the Kiosk account, no admin needed)
+   - Puts kiosk-start.vbs in the Kiosk account's Startup folder
+     (starts server hidden -> starts keyboard filter -> opens Edge kiosk
+      -> watchdog restarts Edge / filter if they stop)
+   - Disables: Windows key shortcuts, Win+R, right-click menus,
+     Task Manager, Command Prompt, PowerShell, regedit, Control Panel
+   - The keyboard filter (kiosk-keys.py) additionally blocks Alt+Tab,
+     Alt+F4 and every other Alt-combo except Ctrl+Alt+A
+
+TO REMOVE EVERYTHING (while signed in as Kiosk)
+   - Double-click uninstall-kiosk.vbs
+     (it deletes the Startup entry and all the restrictions - a .vbs is used
+      because cmd/regedit are blocked, but wscript is not)
+   - Sign out and sign in again
+
+FILES
+   run.bat                  normal (non-kiosk) launch
+   start-on-boot.bat        optional Startup-folder server start (normal use)
+   install-kiosk.bat        run as the Kiosk user - kiosk lockdown setup
+   uninstall-kiosk.vbs      run as the Kiosk user - removes lockdown again
+   kiosk-start.vbs          kiosk Startup entry (server + filter + Edge + watchdog)
+   kiosk-keys.py            keyboard filter (blocks Alt+Tab, Windows key, ...)
+   kiosk-server.bat/.vbs    hidden server with auto-restart
+   app.py / requirements / README / static / templates / reem / tests / data

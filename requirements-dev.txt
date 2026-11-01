@@ -1,0 +1,4 @@
+# Development / QA suite dependencies (pip install -r requirements-dev.txt)
+# The Playwright tests need a browser once:  python -m playwright install chromium
+pytest>=8.0
+playwright>=1.40

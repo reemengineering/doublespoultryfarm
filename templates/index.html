@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" data-font-scale="md"{% if staff %} class="page-staff"{% endif %}>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content"
+    />
+    <meta name="theme-color" content="#f2f4f8" />
+    <meta name="color-scheme" content="light" />
+    <meta
+      name="description"
+      content="DOUBLES POULTRY FARM {% if staff %}staff {% endif %}weighing terminal{% if not staff %}: item master, formulas, weighing workflow and production reports{% endif %}."
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <title>{{ brand }} — {% if staff %}Staff {% endif %}Weighing Terminal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css', v=asset_ver) }}" />
+  </head>
+  <body>
+    <div id="app" class="app-loading">Loading…</div>
+    <noscript>
+      <p class="noscript">This weighing terminal needs JavaScript enabled.</p>
+    </noscript>
+    <script type="module" src="{{ url_for('static', filename='js/' + ('staff' if staff else 'app') + '.js', v=asset_ver) }}"></script>
+  </body>
+</html>

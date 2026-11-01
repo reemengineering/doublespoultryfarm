@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" data-font-scale="md">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#f2f4f8" />
+    <meta name="color-scheme" content="light" />
+    <title>DOUBLES POULTRY FARM — Offline</title>
+    <link rel="stylesheet" href="static/css/app.css" />
+    <style>
+      /* Offline card sits alone on the asset page: no terminal chrome exists
+         here, so give the card a simple centered frame. Kept local so the
+         shared app.css never has to know about this page. */
+      body { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+      .panel { max-width: 30rem; margin: 0 1rem; }
+      .panel p { line-height: 1.5; }
+      .panel button { margin-top: 0.5rem; }
+    </style>
+  </head>
+  <body>
+    <div class="panel">
+      <h3>Server Unreachable</h3>
+      <p>
+        The admin terminal is shown from the weighbridge server. Connect both
+        devices to the same Wi-Fi, then set the server address (IP:PORT) from
+        the app menu.
+      </p>
+      <button class="btn btn-primary" type="button" id="retry">RETRY</button>
+    </div>
+    <!-- Plain script only: ES modules are blocked across file:// assets. The
+         AndroidApp bridge is injected by MainActivity; without it (e.g. in a
+         plain browser) reload the page instead. -->
+    <script>
+      (function () {
+        var btn = document.getElementById('retry');
+        if (btn) {
+          btn.addEventListener('click', function () {
+            if (window.AndroidApp && window.AndroidApp.retry) {
+              AndroidApp.retry();
+            } else {
+              window.location.reload();
+            }
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

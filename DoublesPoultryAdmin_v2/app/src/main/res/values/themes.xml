@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.DoublesPoultryAdmin" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#0f7a3e</item>
+        <item name="colorPrimaryContainer">#1fb25c</item>
+        <item name="android:statusBarColor">#0f7a3e</item>
+    </style>
+</resources>
